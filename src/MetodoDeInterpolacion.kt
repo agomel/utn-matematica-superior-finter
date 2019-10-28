@@ -1,0 +1,3 @@
+enum class MetodoDeInterpolacion {
+    LAGRANGE, NEWTON_GREGORY_REGRESIVO, NEWTON_GREGRY_PROGRESIVO
+}
