@@ -7,7 +7,7 @@ interface Interpolation {
     fun evaluate(k: Float): Float
 }
 
-object LagrangeItem : InterpolateItem("Newton Gregory - Progresivo") {
+object LagrangeItem : InterpolateItem("Lagrange") {
 
     override fun interpolation(points: List<OrderedPair>) = Lagrange(points)
 }
