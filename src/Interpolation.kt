@@ -14,10 +14,8 @@ object LagrangeItem : InterpolateItem("Lagrange") {
 
 object NewtonProgressive : InterpolateItem("Newton Gregory - Progresivo") {
 
-    override fun interpolation(points: List<OrderedPair>): Interpolation {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-    // override val interpolation = object : Interpolation { ... }
+    override fun interpolation(points: List<OrderedPair>) = NewtonGregoryProgressive(points)
+
 }
 
 object NewtonRegressive : InterpolateItem("Newton Gregory - Regresivo") {
