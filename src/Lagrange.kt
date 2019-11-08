@@ -23,10 +23,12 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         println(polynomial)
 
         println()
+        println("//El grado del polinomio es ${findGrade()}")
         println("//TODO pintar el grado del polinomio")
 
         println()
-        println("//TODO pintar si los puntos son o no equiespaciados")
+        println("Los puntos ${if(pointsAreEquispaced) "no" else ""} son equiespaciados")
+        println()
 
         printSeparator()
     }
@@ -49,6 +51,10 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         accumulated * (k - value)
     }
 
+
+    //Obtengo la suma de todos los yi / Li(xi)
+    private fun polinomialWithoutLi():Float = points.map { (x, y) -> (y / liEvaluate(x, x)) }.sum()
+
     //Para un valor de xi convierto a string el valor de su funcion Li
     private fun liString(xiValue: Float) = liValues(xiValue).fold("") { accumulated, value ->
         "$accumulated(x ${(-value).signAsString()} ${abs(value)})"
@@ -56,4 +62,15 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
 
     //    val polynomialCoefficient = puntos.map { (x, y) -> y / liEvaluate(x, x) }.sum() //Si da 0 no es de grado maximo
     //    val evaluate = { k: Float -> puntos.map { (x, y) -> (y / liEvaluate(x, x)) * liEvaluate(x, k) }.sum() }
+
+    protected val pointsAreEquispaced: Boolean by lazy{
+        if(points.size < 2) false
+        else{
+            val h = points[1].first - points[0].first
+            points.map { it.first }.zipWithNext { a, b -> b - a == h }.all { it } //chequeo que todos los puntos cumplan esa distancia
+        }
+    }
+
+    private fun findGrade(): String = if(polinomialWithoutLi() != 0f) (points.size - 1).toString() else  "TODO como averiguarlo"
+
 }
