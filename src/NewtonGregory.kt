@@ -42,7 +42,7 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
 
     protected abstract fun calculateDeltasEquispaced(values: List<Float>, accum: List<List<Float>> = emptyList()): List<List<Float>>
 
-    protected val pointsAreEquispaced: Boolean by lazy{
+    protected val pointsAreEquispaced: Boolean by lazy {
         if(points.size < 2) false
         else points.map { it.first }.zipWithNext { a, b -> b - a == h }.all { it } //chequeo que todos los puntos cumplan esa distancia
     }
@@ -54,8 +54,8 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
         points.filterIndexed{ index, _ -> index <= i }.fold(1F){accum, value -> accum * (x - value.first)}
 
     protected fun differencesTableString() {
-        println("|${pad("X")}|${pad("Y")}|${stringTitles(deltas)}")
-        points.forEachIndexed { index, (x, y) -> println("|${pad(x.toString())}|${pad(y.toString())}|${stringDeltas(deltas, index)}") }
+        println("|${pad("X")}|${pad("Y")}|${stringTitles()}")
+        points.forEachIndexed { index, (x, y) -> println("|${pad(x.toString())}|${pad(y.toString())}|${stringDeltas(index)}") }
 
     }
 
@@ -84,9 +84,9 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
     protected fun pad(title: String) =
         title.padEnd(13)
 
-    protected fun stringTitles(deltas: List<List<Float>>) =
+    protected fun stringTitles() =
         deltas.foldIndexed("") { index, acc, _ -> "$acc${pad("Δ${index.let { if (it > 0) "^${it+1}" else "" }}")}|" }
 
-    protected fun stringDeltas(deltas: List<List<Float>>, index: Int): String =
+    protected fun stringDeltas(index: Int): String =
         deltas.fold("") { acc, list -> if (list.size > index) "$acc${pad(list[index].toString())}|" else acc }
 }
