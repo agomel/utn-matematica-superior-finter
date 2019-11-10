@@ -10,6 +10,14 @@ class NewtonGregoryProgressive(points: List<OrderedPair>) : NewtonGregory(points
                 "P(X) = ${points.first().second}${deltas.foldIndexed("") { index, str, list -> "$str ${list.first().let { if (!it.equals(0F)) "${it.signAsString()} ${abs(it)}${stringXValues(index)}" else "" }}" }}"
         }
 
+    override fun differencesTableString() {
+        println("|${pad("X")}|${pad("Y")}|${stringTitles()}")
+        points.forEachIndexed { index, (x, y) -> println("|${pad(x.toString())}|${pad(y.toString())}|${stringDeltas(index)}") }
+    }
+
+    override fun stringXValues(i: Int) =
+            points.filterIndexed{ index, _ -> index <= i }.fold(""){str, value -> "$str(x " + value.first.let { if (it.equals(0F)) ")" else "- ${value.first})"} }
+
     override fun printSteps() {
         printSeparator()
 
@@ -58,5 +66,6 @@ class NewtonGregoryProgressive(points: List<OrderedPair>) : NewtonGregory(points
     override fun polynomialSteps(): String =
         "P(X) = ${points.first().second} ${deltas.foldIndexed(""){index, str, list -> "$str ${list.first().let { if (!it.equals(0)) "+ ${stringTerm(index, it)}${stringXValues(index)}" else "" }}"}}"
 
-
+    override fun stringTitles(): String =
+            deltas.foldIndexed("") { index, acc, _ -> "$acc${pad("Δ${index.let { if (it > 0) "^${it+1}" else "" }}")}|" }
 }

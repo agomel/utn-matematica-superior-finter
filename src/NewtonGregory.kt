@@ -47,17 +47,12 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
         else points.map { it.first }.zipWithNext { a, b -> b - a == h }.all { it } //chequeo que todos los puntos cumplan esa distancia
     }
 
-    protected fun stringXValues(i: Int) =
-        points.filterIndexed{ index, _ -> index <= i }.fold(""){str, value -> "$str(x " + value.first.let { if (it.equals(0F)) ")" else "- ${value.first})"} }
+    abstract fun stringXValues(i: Int) : String
 
     protected fun xValues(i: Int, x: Float) =
         points.filterIndexed{ index, _ -> index <= i }.fold(1F){accum, value -> accum * (x - value.first)}
 
-    protected fun differencesTableString() {
-        println("|${pad("X")}|${pad("Y")}|${stringTitles()}")
-        points.forEachIndexed { index, (x, y) -> println("|${pad(x.toString())}|${pad(y.toString())}|${stringDeltas(index)}") }
-
-    }
+    abstract fun differencesTableString ()
 
     protected fun findGrade() =
         points.filterIndexed { index, _ -> index <= deltas.indexOf(biggestTerm()) }.size
@@ -84,8 +79,7 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
     protected fun pad(title: String) =
         title.padEnd(13)
 
-    protected fun stringTitles() =
-        deltas.foldIndexed("") { index, acc, _ -> "$acc${pad("Δ${index.let { if (it > 0) "^${it+1}" else "" }}")}|" }
+    abstract fun stringTitles() : String;
 
     protected fun stringDeltas(index: Int): String =
         deltas.fold("") { acc, list -> if (list.size > index) "$acc${pad(list[index].toString())}|" else acc }
