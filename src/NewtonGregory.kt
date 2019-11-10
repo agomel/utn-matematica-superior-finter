@@ -49,8 +49,7 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
 
     abstract fun stringXValues(i: Int) : String
 
-    protected fun xValues(i: Int, x: Float) =
-        points.filterIndexed{ index, _ -> index <= i }.fold(1F){accum, value -> accum * (x - value.first)}
+    abstract fun xValues(i: Int, x: Float):Float
 
     abstract fun differencesTableString ()
 

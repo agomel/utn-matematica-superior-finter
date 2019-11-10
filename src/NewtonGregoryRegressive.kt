@@ -37,6 +37,9 @@ class NewtonGregoryRegressive(points: List<OrderedPair>) : NewtonGregory(points)
         printSeparator()
     }
 
+    override fun xValues(i: Int, x: Float) =
+            points.reversed().filterIndexed{ index, _ -> index <= i }.fold(1F){accum, value -> accum * (x - value.first)}
+
     override fun evaluate(k: Float): Float =
             points.last().second + (deltas.foldIndexed(0F) { index, acc, list -> acc + term(index, list.first()) * xValues(index, k) })
 

@@ -18,6 +18,9 @@ class NewtonGregoryProgressive(points: List<OrderedPair>) : NewtonGregory(points
     override fun stringXValues(i: Int) =
             points.filterIndexed{ index, _ -> index <= i }.fold(""){str, value -> "$str(x " + value.first.let { if (it.equals(0F)) ")" else "- ${value.first})"} }
 
+    override fun xValues(i: Int, x: Float) =
+            points.filterIndexed{ index, _ -> index <= i }.fold(1F){accum, value -> accum * (x - value.first)}
+
     override fun printSteps() {
         printSeparator()
 
