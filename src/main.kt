@@ -21,7 +21,7 @@ fun act(orderedPairs: List<OrderedPair>, option: InterpolateItem) {
         ShowSteps -> interpolation.printSteps()
 
         SetValueToPolynomial -> {
-            val x = requestDouble("x = ")
+            val x = requestDouble("k = ")
             val y = interpolation.evaluate(x)
             println()
             println("P($x) = $y")
