@@ -23,8 +23,7 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         println(polynomial)
 
         println()
-        println("//El grado del polinomio es ${findGrade()}")
-        println("//TODO pintar el grado del polinomio")
+        println("El grado del polinomio es ${NewtonGregoryProgressive(points).findGrade()}")
 
         println()
         println("Los puntos ${if(pointsAreEquispaced) "no" else ""} son equiespaciados")
@@ -70,7 +69,5 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
             points.map { it.first }.zipWithNext { a, b -> b - a == h }.all { it } //chequeo que todos los puntos cumplan esa distancia
         }
     }
-
-    private fun findGrade(): String = if(polinomialWithoutLi() != 0.0) (points.size - 1).toString() else  "TODO como averiguarlo"
 
 }

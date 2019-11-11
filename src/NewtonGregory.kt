@@ -53,7 +53,7 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
 
     abstract fun differencesTableString ()
 
-    protected fun findGrade() =
+    public fun findGrade() =
         points.filterIndexed { index, _ -> index <= deltas.indexOf(biggestTerm()) }.size
 
     protected fun biggestTerm() =
