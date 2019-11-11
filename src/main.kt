@@ -1,9 +1,15 @@
-typealias OrderedPair = Pair<Float, Float>
+typealias OrderedPair = Pair<Double, Double>
 
 fun main() {
-    val orderedPairs = requestOrderedPairs()
-    val option = requestInterpolation()
-    act(orderedPairs, option)
+    do {
+        val orderedPairs = requestOrderedPairs()
+        if (orderedPairs.isNotEmpty()) {
+            val option = requestInterpolation()
+            act(orderedPairs, option)
+            printSeparator()
+        }
+    } while (orderedPairs.isNotEmpty())
+    print("¡Chau! :)")
 }
 
 fun act(orderedPairs: List<OrderedPair>, option: InterpolateItem) {
@@ -15,7 +21,7 @@ fun act(orderedPairs: List<OrderedPair>, option: InterpolateItem) {
         ShowSteps -> interpolation.printSteps()
 
         SetValueToPolynomial -> {
-            val x = requestFloat("x = ")
+            val x = requestDouble("x = ")
             val y = interpolation.evaluate(x)
             println()
             println("P($x) = $y")
@@ -51,12 +57,12 @@ fun alterValues(orderedPairs: List<OrderedPair>): List<OrderedPair> {
 
         println()
         println("Ingrese el par ordenado:")
-        if (index > 0f) {
-            val x = requestFloat("x = ")
-            val y = requestFloat("y = ")
+        if (index > 0.0) {
+            val x = requestDouble("x = ")
+            val y = requestDouble("y = ")
             mutablePairs[index - 1] = x to y
         }
         println()
-    } while (index > 0f)
+    } while (index > 0.0)
     return mutablePairs
 }

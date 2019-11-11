@@ -5,9 +5,9 @@ class NewtonGregoryProgressive(points: List<OrderedPair>) : NewtonGregory(points
     override val polynomial: String
         get() {
             return if (pointsAreEquispaced)
-                "P(X) = ${points.first().second}${deltas.foldIndexed("") { index, str, list -> "$str ${list.first().let { if (!it.equals(0F)) "${calculateEquispacedTerm(index, it).let { term -> "${term.signAsString()} ${abs(term)}" }}${stringXValues(index)}" else "" }}" }}"
+                "P(X) = ${points.first().second}${deltas.foldIndexed("") { index, str, list -> "$str ${list.first().let { if (!it.equals(0.0)) "${calculateEquispacedTerm(index, it).let { term -> "${term.signAsString()} ${abs(term)}" }}${stringXValues(index)}" else "" }}" }}"
             else
-                "P(X) = ${points.first().second}${deltas.foldIndexed("") { index, str, list -> "$str ${list.first().let { if (!it.equals(0F)) "${it.signAsString()} ${abs(it)}${stringXValues(index)}" else "" }}" }}"
+                "P(X) = ${points.first().second}${deltas.foldIndexed("") { index, str, list -> "$str ${list.first().let { if (!it.equals(0.0)) "${it.signAsString()} ${abs(it)}${stringXValues(index)}" else "" }}" }}"
         }
 
     override fun differencesTableString() {
@@ -16,10 +16,10 @@ class NewtonGregoryProgressive(points: List<OrderedPair>) : NewtonGregory(points
     }
 
     override fun stringXValues(i: Int) =
-            points.filterIndexed{ index, _ -> index <= i }.fold(""){str, value -> "$str(x " + value.first.let { if (it.equals(0F)) ")" else "- ${value.first})"} }
+            points.filterIndexed{ index, _ -> index <= i }.fold(""){str, value -> "$str(x " + value.first.let { if (it.equals(0.0)) ")" else "- ${value.first})"} }
 
-    override fun xValues(i: Int, x: Float) =
-            points.filterIndexed{ index, _ -> index <= i }.fold(1F){accum, value -> accum * (x - value.first)}
+    override fun xValues(i: Int, x: Double) =
+            points.filterIndexed{ index, _ -> index <= i }.fold(1.0){accum, value -> accum * (x - value.first)}
 
     override fun printSteps() {
         printSeparator()
@@ -44,10 +44,10 @@ class NewtonGregoryProgressive(points: List<OrderedPair>) : NewtonGregory(points
         printSeparator()
     }
 
-    override fun evaluate(k: Float): Float =
-            points.first().second + (deltas.foldIndexed(0F) { index, acc, list -> acc + term(index, list.first()) * xValues(index, k) })
+    override fun evaluate(k: Double): Double =
+            points.first().second + (deltas.foldIndexed(0.0) { index, acc, list -> acc + term(index, list.first()) * xValues(index, k) })
 
-    override fun calculateDeltasNotEquispaced(values: List<Float>, accum: List<List<Float>>, nDelta: Int): List<List<Float>> {
+    override fun calculateDeltasNotEquispaced(values: List<Double>, accum: List<List<Double>>, nDelta: Int): List<List<Double>> {
         var indexA = 0
         return values.zipWithNext { a, b ->
             val divider = points[indexA + 1 + nDelta].first - points[indexA].first
@@ -59,7 +59,7 @@ class NewtonGregoryProgressive(points: List<OrderedPair>) : NewtonGregory(points
                 }
     }
 
-    override fun calculateDeltasEquispaced(values: List<Float>, accum: List<List<Float>>): List<List<Float>> =
+    override fun calculateDeltasEquispaced(values: List<Double>, accum: List<List<Double>>): List<List<Double>> =
             values.zipWithNext { a, b -> b - a }
                     .let {
                         if (it.isEmpty()) accum else calculateDeltasEquispaced(it, accum.plusElement(it))

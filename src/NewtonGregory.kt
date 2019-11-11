@@ -27,7 +27,7 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
 
     protected abstract fun polynomialSteps(): String
 
-    protected val deltas: List<List<Float>> by lazy {
+    protected val deltas: List<List<Double>> by lazy {
         points.map { it.second }.let {
             if (pointsAreEquispaced)
                 calculateDeltasEquispaced(it)
@@ -36,11 +36,11 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
         }
     }
 
-    protected val h: Float by lazy { points[1].first - points[0].first } //la distancia entre cada punto, si son equiespaciados
+    protected val h: Double by lazy { points[1].first - points[0].first } //la distancia entre cada punto, si son equiespaciados
 
-    protected abstract fun calculateDeltasNotEquispaced(values: List<Float>, accum: List<List<Float>> = emptyList(), nDelta: Int = 0): List<List<Float>>
+    protected abstract fun calculateDeltasNotEquispaced(values: List<Double>, accum: List<List<Double>> = emptyList(), nDelta: Int = 0): List<List<Double>>
 
-    protected abstract fun calculateDeltasEquispaced(values: List<Float>, accum: List<List<Float>> = emptyList()): List<List<Float>>
+    protected abstract fun calculateDeltasEquispaced(values: List<Double>, accum: List<List<Double>> = emptyList()): List<List<Double>>
 
     protected val pointsAreEquispaced: Boolean by lazy {
         if(points.size < 2) false
@@ -49,7 +49,7 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
 
     abstract fun stringXValues(i: Int) : String
 
-    abstract fun xValues(i: Int, x: Float):Float
+    abstract fun xValues(i: Int, x: Double):Double
 
     abstract fun differencesTableString ()
 
@@ -57,15 +57,15 @@ abstract class NewtonGregory(protected val points: List<OrderedPair>) : Interpol
         points.filterIndexed { index, _ -> index <= deltas.indexOf(biggestTerm()) }.size
 
     protected fun biggestTerm() =
-        deltas.findLast { list -> !list.first().let { it.equals(0F) } }
+        deltas.findLast { list -> !list.first().let { it.equals(0.0) } }
 
-    protected fun term(index: Int, delta: Float) =
+    protected fun term(index: Int, delta: Double) =
         if (!pointsAreEquispaced) delta else calculateEquispacedTerm(index, delta)
 
-    protected fun calculateEquispacedTerm(index: Int, delta: Float): Float = //pow es elevar
+    protected fun calculateEquispacedTerm(index: Int, delta: Double): Double = //pow es elevar
         delta / (factorial(index + 1) * h.pow(index + 1))
 
-    protected fun stringTerm(index: Int, delta: Float): String =
+    protected fun stringTerm(index: Int, delta: Double): String =
         "[$delta / ${index.let { if (it == 0) h.toString() else "(${it + 1}! * $h^${it + 1})"}}]"
 
     protected fun factorial(num: Int): Long {

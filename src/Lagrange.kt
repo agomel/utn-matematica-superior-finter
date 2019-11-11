@@ -40,28 +40,28 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         }
 
 
-    override fun evaluate(k: Float) = points.map { (x, y) -> (y / liEvaluate(x, x)) * liEvaluate(x, k) }.sum()
+    override fun evaluate(k: Double) = points.map { (x, y) -> (y / liEvaluate(x, x)) * liEvaluate(x, k) }.sum()
 
     //Dado un valor de Xi obtengo el resto de valores de y para sacar la funcion Li
-    private fun liValues(xiValue: Float) =
+    private fun liValues(xiValue: Double) =
         points.filter { (x, _) -> !x.equals(xiValue) }.map { it.first }
 
     //Dado un valor de Xi obtengo su funcion Li y la evaluo en un valor k
-    private fun liEvaluate(xiValue: Float, k: Float) = liValues(xiValue).fold(1f) { accumulated, value ->
+    private fun liEvaluate(xiValue: Double, k: Double) = liValues(xiValue).fold(1.0) { accumulated, value ->
         accumulated * (k - value)
     }
 
 
     //Obtengo la suma de todos los yi / Li(xi)
-    private fun polinomialWithoutLi():Float = points.map { (x, y) -> (y / liEvaluate(x, x)) }.sum()
+    private fun polinomialWithoutLi():Double = points.map { (x, y) -> (y / liEvaluate(x, x)) }.sum()
 
     //Para un valor de xi convierto a string el valor de su funcion Li
-    private fun liString(xiValue: Float) = liValues(xiValue).fold("") { accumulated, value ->
+    private fun liString(xiValue: Double) = liValues(xiValue).fold("") { accumulated, value ->
         "$accumulated(x ${(-value).signAsString()} ${abs(value)})"
     }
 
     //    val polynomialCoefficient = puntos.map { (x, y) -> y / liEvaluate(x, x) }.sum() //Si da 0 no es de grado maximo
-    //    val evaluate = { k: Float -> puntos.map { (x, y) -> (y / liEvaluate(x, x)) * liEvaluate(x, k) }.sum() }
+    //    val evaluate = { k: Double -> puntos.map { (x, y) -> (y / liEvaluate(x, x)) * liEvaluate(x, k) }.sum() }
 
     protected val pointsAreEquispaced: Boolean by lazy{
         if(points.size < 2) false
@@ -71,6 +71,6 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         }
     }
 
-    private fun findGrade(): String = if(polinomialWithoutLi() != 0f) (points.size - 1).toString() else  "TODO como averiguarlo"
+    private fun findGrade(): String = if(polinomialWithoutLi() != 0.0) (points.size - 1).toString() else  "TODO como averiguarlo"
 
 }

@@ -17,7 +17,7 @@ fun <T : OptionItem> requestOption(requestText: String = "", list: List<T>): T {
 
 // PRIMITIVES
 fun requestInt(requestText: String = "") = request(requestText) { it?.toIntOrNull() }
-fun requestFloat(requestText: String = "") = request(requestText) { it?.toFloatOrNull() }
+fun requestDouble(requestText: String = "") = request(requestText) { it?.toDoubleOrNull() }
 
 // DOMAIN
 fun requestAction() = requestOption("Seleccione la acción a realizar:", ActionItem.values)
@@ -28,13 +28,18 @@ fun requestOrderedPairs(): List<OrderedPair> {
     println()
     val count = requestInt()
 
-    println()
-    println("Ingrese la serie de puntos")
-    println()
-    val xPoints = (1..count).map { requestFloat("x$it = ") }
+    return if (count > 0) {
+        println()
+        println("Ingrese la serie de puntos")
+        println()
+        val xPoints = (1..count).map { requestDouble("x$it = ") }
 
-    println()
-    println("Ingrese sus imagenes")
-    println()
-    return xPoints.mapIndexed { i, it -> it to requestFloat("x${i + 1} = $it => f(x${i + 1}) = f($it) = ") }
+        println()
+        println("Ingrese sus imagenes")
+        println()
+
+        xPoints.mapIndexed { i, it -> it to requestDouble("x${i + 1} = $it => f(x${i + 1}) = f($it) = ") }
+    } else {
+        emptyList()
+    }
 }

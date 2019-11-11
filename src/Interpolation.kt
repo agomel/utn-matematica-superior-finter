@@ -4,7 +4,7 @@ interface Interpolation {
 
     fun printSteps()
 
-    fun evaluate(k: Float): Float
+    fun evaluate(k: Double): Double
 }
 
 object LagrangeItem : InterpolateItem("Lagrange") {
