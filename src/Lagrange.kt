@@ -63,7 +63,10 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         if(points.size < 2) false
         else{
             val h = points[1].first - points[0].first
-            points.map { it.first }.zipWithNext { a, b -> b - a == h }.all { it } //chequeo que todos los puntos cumplan esa distancia
+            println(h)
+            points.map { it.first }.zipWithNext { a, b ->
+                println("$b - $a")
+                b - a == h }.all { it } //chequeo que todos los puntos cumplan esa distancia
         }
     }
 
