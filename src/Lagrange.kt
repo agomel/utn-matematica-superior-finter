@@ -26,7 +26,7 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         println("El grado del polinomio es ${NewtonGregoryProgressive(points).findGrade()}")
 
         println()
-        println("Los puntos ${if(pointsAreEquispaced) "no" else ""} son equiespaciados")
+        println("Los puntos ${if(pointsAreEquispaced) "" else "no"} son equiespaciados")
         println()
 
         printSeparator()
