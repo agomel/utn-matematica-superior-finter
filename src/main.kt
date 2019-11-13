@@ -44,11 +44,12 @@ fun alterValues(orderedPairs: List<OrderedPair>): List<OrderedPair> {
     val mutablePairs = orderedPairs.toMutableList()
     do {
         println("Elija un par ordenado para modificar:")
-        mutablePairs.forEachIndexed { i, it -> println("${i + 1}. $it") }
         println("0. Terminar")
+        mutablePairs.forEachIndexed { i, it -> println("${i + 1}. $it") }
+        println("${mutablePairs.size + 1}. Agregar")
         val index = request {
             val index = it?.toIntOrNull() ?: -1
-            if (index >= 0 && index <= orderedPairs.size) {
+            if (index >= 0 && index <= mutablePairs.size + 1) {
                 index
             } else {
                 null
@@ -56,13 +57,22 @@ fun alterValues(orderedPairs: List<OrderedPair>): List<OrderedPair> {
         }
 
         println()
-        println("Ingrese el par ordenado:")
-        if (index > 0.0) {
-            val x = requestDouble("x = ")
-            val y = requestDouble("y = ")
-            mutablePairs[index - 1] = x to y
+        println("Ingrese el par ordenado (ingrese un guión medio para eliminar):")
+        if (index > 0) {
+            val x = request("x = ") { if (it?.trim() == "-") "-" else it?.toDoubleOrNull() }
+            if (x == "-" && index <= mutablePairs.size) {
+                mutablePairs.removeAt(index - 1)
+            } else if (x is Double) {
+                val y = requestDouble("y = ")
+
+                if (index <= mutablePairs.size) {
+                    mutablePairs[index - 1] = x to y
+                } else {
+                    mutablePairs.add(x to y)
+                }
+            }
         }
         println()
-    } while (index > 0.0)
+    } while (index > 0)
     return mutablePairs
 }
