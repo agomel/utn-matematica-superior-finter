@@ -92,6 +92,11 @@ fun alterValues(orderedPairs: List<OrderedPair>, option: InterpolateItem): List<
         println(newInterpolation.polynomial)
     }
 
-    return mutablePairs
+    println()
+    println("¿Desea continuar con el nuevo polinomio o con el original?")
+    println("1. Usar el nuevo polinomio")
+    println("0. Seguir con el original")
+    val response = request { if (it?.toIntOrNull() == 1 || it?.toIntOrNull() == 0) it.toInt() == 1 else null }
+    return if (response) mutablePairs else orderedPairs
 }
 
