@@ -41,7 +41,7 @@ class NewtonGregoryRegressive(points: List<OrderedPair>) : NewtonGregory(points)
             points.reversed().filterIndexed{ index, _ -> index <= i }.fold(1.0){accum, value -> accum * (x - value.first)}
 
     override fun evaluate(k: Double): Double =
-            points.last().second + (deltas.foldIndexed(0.0) { index, acc, list -> acc + term(index, list.first()) * xValues(index, k) })
+            points.last().second + (deltas.foldIndexed(0.0) { index, acc, list -> acc + term(index, list.first()) * xValues(index, k) }).round()
 
     override fun calculateDeltasNotEquispaced(values: List<Double>, accum: List<List<Double>>, nDelta: Int): List<List<Double>> {
         var indexA = 0

@@ -29,8 +29,8 @@ fun act(orderedPairs: List<OrderedPair>, option: InterpolateItem) {
         }
 
         AlterValues -> {
-            act(alterValues(orderedPairs), option)
-            return
+            act(alterValues(orderedPairs, option), option)
+            return;
         }
 
         Exit -> return
@@ -39,9 +39,12 @@ fun act(orderedPairs: List<OrderedPair>, option: InterpolateItem) {
     act(orderedPairs, option)
 }
 
-fun alterValues(orderedPairs: List<OrderedPair>): List<OrderedPair> {
-    println()
+fun alterValues(orderedPairs: List<OrderedPair>, option: InterpolateItem): List<OrderedPair> {
+
+    val actualInterpolation = option.interpolation(orderedPairs)
     val mutablePairs = orderedPairs.toMutableList()
+
+    println()
     do {
         println("Elija un par ordenado para modificar:")
         println("0. Terminar")
@@ -57,8 +60,8 @@ fun alterValues(orderedPairs: List<OrderedPair>): List<OrderedPair> {
         }
 
         println()
-        println("Ingrese el par ordenado (ingrese un guión medio para eliminar):")
         if (index > 0) {
+            println("Ingrese el par ordenado (ingrese un guión medio para eliminar):")
             val x = request("x = ") { if (it?.trim() == "-") "-" else it?.toDoubleOrNull() }
             if (x == "-" && index <= mutablePairs.size) {
                 mutablePairs.removeAt(index - 1)
@@ -74,5 +77,21 @@ fun alterValues(orderedPairs: List<OrderedPair>): List<OrderedPair> {
         }
         println()
     } while (index > 0)
+
+    val newInterpolation = option.interpolation(mutablePairs)
+    val hasAltered = (-50..50).any {
+        if (actualInterpolation.evaluate(it.toDouble()) != newInterpolation.evaluate(it.toDouble())) {
+            println("La caga: $it -> ${actualInterpolation.evaluate(it.toDouble())} != ${newInterpolation.evaluate(it.toDouble())}")
+        }
+        actualInterpolation.evaluate(it.toDouble()) != newInterpolation.evaluate(it.toDouble())
+    }
+
+    println("El cambio ${if (hasAltered) "" else "no "}altera al polinomio.")
+    if (hasAltered) {
+        println("El nuevo polinomio es:")
+        println(newInterpolation.polynomial)
+    }
+
     return mutablePairs
 }
+

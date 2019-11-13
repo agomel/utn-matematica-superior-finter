@@ -45,7 +45,7 @@ class NewtonGregoryProgressive(points: List<OrderedPair>) : NewtonGregory(points
     }
 
     override fun evaluate(k: Double): Double =
-            points.first().second + (deltas.foldIndexed(0.0) { index, acc, list -> acc + term(index, list.first()) * xValues(index, k) })
+            points.first().second + (deltas.foldIndexed(0.0) { index, acc, list -> acc + term(index, list.first()) * xValues(index, k) }).round()
 
     override fun calculateDeltasNotEquispaced(values: List<Double>, accum: List<List<Double>>, nDelta: Int): List<List<Double>> {
         var indexA = 0

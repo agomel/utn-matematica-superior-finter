@@ -39,7 +39,7 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         }
 
 
-    override fun evaluate(k: Double) = points.map { (x, y) -> (y / liEvaluate(x, x)) * liEvaluate(x, k) }.sum()
+    override fun evaluate(k: Double) = points.map { (x, y) -> (y / liEvaluate(x, x)) * liEvaluate(x, k) }.sum().round()
 
     //Dado un valor de Xi obtengo el resto de valores de y para sacar la funcion Li
     private fun liValues(xiValue: Double) =
@@ -59,10 +59,7 @@ class Lagrange(private val points: List<OrderedPair>) : Interpolation {
         "$accumulated(x ${(-value).signAsString()} ${abs(value)})"
     }
 
-    //    val polynomialCoefficient = puntos.map { (x, y) -> y / liEvaluate(x, x) }.sum() //Si da 0 no es de grado maximo
-    //    val evaluate = { k: Double -> puntos.map { (x, y) -> (y / liEvaluate(x, x)) * liEvaluate(x, k) }.sum() }
-
-    protected val pointsAreEquispaced: Boolean by lazy{
+    private val pointsAreEquispaced: Boolean by lazy{
         if(points.size < 2) false
         else{
             val h = points[1].first - points[0].first

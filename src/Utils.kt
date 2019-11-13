@@ -1,4 +1,6 @@
 import java.lang.Exception
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 fun Number.signAsString(): String {
     fun isPositive() = when (this) {
@@ -15,3 +17,5 @@ fun printSeparator() {
     println("/****************************************************/")
     println()
 }
+
+fun Double.round(decimals: Int = 6) = (this * 10.0.pow(decimals)).roundToInt() / 10.0.pow(decimals)

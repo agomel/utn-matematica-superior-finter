@@ -1,5 +1,5 @@
 object ShowPolynomial : ActionItem("Ver polinomio")
 object ShowSteps : ActionItem("Mostrar pasos de cálculo")
 object SetValueToPolynomial : ActionItem("Especializar el polinomio en un valor K")
-object AlterValues : ActionItem("Alterar valores iniciales")
+object AlterValues : ActionItem("Alterar valores para verificar si se altera el polinomio")
 object Exit : ActionItem("Salir")
