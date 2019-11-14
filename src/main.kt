@@ -30,7 +30,7 @@ fun act(orderedPairs: List<OrderedPair>, option: InterpolateItem) {
 
         AlterValues -> {
             act(alterValues(orderedPairs, option), option)
-            return;
+            return
         }
 
         Exit -> return
@@ -80,9 +80,6 @@ fun alterValues(orderedPairs: List<OrderedPair>, option: InterpolateItem): List<
 
     val newInterpolation = option.interpolation(mutablePairs)
     val hasAltered = (-50..50).any {
-        if (actualInterpolation.evaluate(it.toDouble()) != newInterpolation.evaluate(it.toDouble())) {
-            println("La caga: $it -> ${actualInterpolation.evaluate(it.toDouble())} != ${newInterpolation.evaluate(it.toDouble())}")
-        }
         actualInterpolation.evaluate(it.toDouble()) != newInterpolation.evaluate(it.toDouble())
     }
 
